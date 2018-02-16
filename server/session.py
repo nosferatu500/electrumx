@@ -16,6 +16,7 @@ from lib.jsonrpc import JSONSession, RPCError, JSONRPCv2, JSONRPC
 import lib.util as util
 from server.daemon import DaemonError
 import server.version as version
+import logging
 
 
 class SessionBase(JSONSession):
@@ -259,6 +260,8 @@ class ElectrumX(SessionBase):
         '''Return a chunk of block headers as a hexadecimal string.
 
         index: the chunk index'''
+        logging.info("index")
+        logging.info(index)
         index = self.controller.non_negative_integer(index)
         if self.client_version < (2, 8, 3):
             self.chunk_indices.append(index)
@@ -269,6 +272,9 @@ class ElectrumX(SessionBase):
                        .format(self.chunk_indices))
                 # use INVALID_REQUEST to trigger a disconnect
                 raise RPCError(msg, JSONRPC.INVALID_REQUEST)
+        
+        logging.info("index")
+        logging.info(index)
         return self.controller.get_chunk(index)
 
     def is_tor(self):

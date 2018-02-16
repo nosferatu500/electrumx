@@ -107,16 +107,10 @@ class Prefetcher(LoggedClass):
                 blocks = await daemon.raw_blocks(hex_hashes)
 
                 assert count == len(blocks)
-                
-                logging.info("daemon_height")
-                logging.info(daemon_height)
-                
-                logging.info("count")
-                logging.info(count)
 
-                logging.info("first")
-                logging.info(first)
-
+                logging.info("self.bp.height")
+                logging.info(self.bp.height)
+                
                 # Special handling for genesis block
                 if first == 0:
                     blocks[0] = self.bp.coin.genesis_block(blocks[0])
@@ -239,6 +233,19 @@ class BlockProcessor(server.db.DB):
         '''Process the list of raw blocks passed.  Detects and handles
         reorgs.
         '''
+
+        logging.info("first")
+        logging.info(first)
+
+        logging.info("self.db_height + 1")
+        logging.info(self.db_height + 1)
+
+        logging.info("self.height + 1")
+        logging.info(self.height + 1)
+
+       # logging.info("self.height + 1")
+       # logging.info(self.height + 1)
+
         self.prefetcher.processing_blocks(raw_blocks)
         if first != self.height + 1:
             # If we prefetched two sets of blocks and the first caused
@@ -248,12 +255,15 @@ class BlockProcessor(server.db.DB):
                                 'expected {:,d}'.format(len(raw_blocks), first,
                                                         self.height + 1))
             return
-
+        
+        
+        
         blocks = [self.coin.block(raw_block, first + n)
                   for n, raw_block in enumerate(raw_blocks)]
         headers = [block.header for block in blocks]
         hprevs = [self.coin.header_prevhash(h) for h in headers]
         chain = [self.tip] + [self.coin.header_hash(h) for h in headers[:-1]]
+
 
         if hprevs == chain:
             start = time.time()

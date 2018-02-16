@@ -120,9 +120,6 @@ class Coin(object):
         header = cls.block_header(block, 0)
         header_hex_hash = hash_to_str(cls.header_hash(header))
 
-        logging.info("header_hex_hash")
-        logging.info(header_hex_hash)
-
         if header_hex_hash != cls.GENESIS_HASH:
             raise CoinError('genesis block has hash {} expected {}'
                             .format(header_hex_hash, cls.GENESIS_HASH))
@@ -243,7 +240,10 @@ class Coin(object):
     @classmethod
     def header_hash(cls, header):
         '''Given a header return hash'''
-        return double_sha256(header)
+        #return double_sha256(header)
+        HEADER_HASH = lambda x: scrypt.hash(x, x, 1024, 1, 1, 32)
+
+        return HEADER_HASH(header)
 
     @classmethod
     def header_prevhash(cls, header):
