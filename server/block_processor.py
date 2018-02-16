@@ -21,7 +21,7 @@ from server.version import VERSION
 from lib.hash import hash_to_str
 from lib.util import chunks, formatted_time, LoggedClass
 import server.db
-
+import logging
 
 class Prefetcher(LoggedClass):
     '''Prefetches blocks (in the forward direction only).'''
@@ -107,13 +107,23 @@ class Prefetcher(LoggedClass):
                 blocks = await daemon.raw_blocks(hex_hashes)
 
                 assert count == len(blocks)
+                
+                logging.info("daemon_height")
+                logging.info(daemon_height)
+                
+                logging.info("count")
+                logging.info(count)
+
+                logging.info("first")
+                logging.info(first)
 
                 # Special handling for genesis block
                 if first == 0:
                     blocks[0] = self.bp.coin.genesis_block(blocks[0])
                     self.logger.info('verified genesis block with hash {}'
                                      .format(hex_hashes[0]))
-
+                
+                
                 # Update our recent average block size estimate
                 size = sum(len(block) for block in blocks)
                 if count >= 10:

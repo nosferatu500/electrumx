@@ -43,7 +43,8 @@ import lib.tx as lib_tx
 from server.block_processor import BlockProcessor
 import server.daemon as daemon
 from server.session import ElectrumX, DashElectrumX
-
+import logging
+import scrypt
 
 Block = namedtuple("Block", "raw header transactions")
 OP_RETURN = OpCodes.OP_RETURN
@@ -118,6 +119,10 @@ class Coin(object):
         '''
         header = cls.block_header(block, 0)
         header_hex_hash = hash_to_str(cls.header_hash(header))
+
+        logging.info("header_hex_hash")
+        logging.info(header_hex_hash)
+
         if header_hex_hash != cls.GENESIS_HASH:
             raise CoinError('genesis block has hash {} expected {}'
                             .format(header_hex_hash, cls.GENESIS_HASH))
@@ -1019,23 +1024,36 @@ class Bitbay(ScryptMixin, Coin):
     REORG_LIMIT = 5000
 
 
-class Peercoin(Coin):
-    NAME = "Peercoin"
-    SHORTNAME = "PPC"
+class CrypticCoin(Coin):
+    NAME = "CrypticCoin"
+    SHORTNAME = "CRYP"
     NET = "mainnet"
-    P2PKH_VERBYTE = bytes.fromhex("37")
-    P2SH_VERBYTES = [bytes.fromhex("75")]
+    HEADER_HASH = None
+    P2PKH_VERBYTE = bytes.fromhex("30")
+    P2SH_VERBYTES = [bytes.fromhex("33")]
     WIF_BYTE = bytes.fromhex("b7")
-    GENESIS_HASH = ('0000000032fe677166d54963b62a4677'
-                    'd8957e87c508eaa4fd7eb1c880cd27e3')
+    GENESIS_HASH = ('000003201729c2621caf1352ff837447'
+                    '2e2d2bf1762ae4dd3092189fe4cea9e0')
     DESERIALIZER = lib_tx.DeserializerTxTime
     DAEMON = daemon.LegacyRPCDaemon
-    TX_COUNT = 1207356
-    TX_COUNT_HEIGHT = 306425
+    TX_COUNT = 10
+    TX_COUNT_HEIGHT = 1000
     TX_PER_BLOCK = 4
-    RPC_PORT = 9902
+    RPC_PORT = 9089
     REORG_LIMIT = 5000
 
+    @classmethod
+    def header_hash(cls, header):
+    
+        if cls.HEADER_HASH is None:
+            
+            cls.HEADER_HASH = lambda x: scrypt.hash(x, x, 1024, 1, 1, 32)
+
+        version, = struct.unpack('<I', header[:4])
+        if version > 6:
+            return super().header_hash(header)
+        else:
+            return cls.HEADER_HASH(header)
 
 class Reddcoin(Coin):
     NAME = "Reddcoin"
