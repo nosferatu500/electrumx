@@ -1029,7 +1029,7 @@ class CrypticCoin(Coin):
     SHORTNAME = "CRYP"
     NET = "mainnet"
     HEADER_HASH = None
-    P2PKH_VERBYTE = bytes.fromhex("30")
+    P2PKH_VERBYTE = bytes.fromhex('1e')
     P2SH_VERBYTES = [bytes.fromhex("33")]
     WIF_BYTE = bytes.fromhex("b7")
     GENESIS_HASH = ('000003201729c2621caf1352ff837447'
