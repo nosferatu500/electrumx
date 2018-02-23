@@ -42,6 +42,38 @@ if [ ! -f v${LEVELDB_VERSION}.tar.gz ]; then
 fi
 
 
+export CPATH=/usr/include
+
+declare rocksVersion="5.10.2"
+
+if [ ! -f v${LEVELDB_VERSION}.tar.gz ]; then
+    wget -O rocksdb-${rocksVersion}.tar.gz https://github.com/facebook/rocksdb/archive/v${rocksVersion}.tar.gz
+    tar -xzf rocksdb-${rocksVersion}.tar.gz
+
+    pushd rocksdb-${rocksVersion}
+    make shared_lib
+    sudo make install-shared INSTALL_PATH=/usr
+
+    make clean
+    
+    make ldb sst_dump
+    sudo cp ldb /usr/local/bin
+    sudo cp sst_dump /usr/local/bin
+
+    popd
+
+# RocksDB installs into the wrong lib (lib not lib64), so we must copy
+# sudo cp /usr/lib/librocksdb.so* /usr/lib64/
+
+fi
+
+
+
+
+
+sudo apt-get install liblz4-dev -y
+sudo python3.6 -m pip install python-rocksdb==0.6.9
+
 sudo python3.6 -m pip install aiohttp
 sudo python3.6 -m pip install scrypt
 sudo python3.6 -m pip install pylru

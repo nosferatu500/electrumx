@@ -17,6 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 from functools import partial
 
 import pylru
+import logging
 
 from lib.jsonrpc import JSONSessionBase, RPCError
 from lib.hash import double_sha256, hash_to_str, hex_str_to_hash
@@ -268,6 +269,7 @@ class Controller(ServerBase):
             await self.start_server('TCP', host, env.tcp_port)
         if env.ssl_port is not None:
             sslc = ssl.SSLContext(ssl.PROTOCOL_TLS)
+            logging.info(env.ssl_certfile)
             sslc.load_cert_chain(env.ssl_certfile, keyfile=env.ssl_keyfile)
             await self.start_server('SSL', host, env.ssl_port, ssl=sslc)
 
