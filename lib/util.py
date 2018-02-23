@@ -236,7 +236,7 @@ def open_file(filename, create=False):
         return open(filename, 'rb+')
     except FileNotFoundError:
         if create:
-            return open('/home/Desktop/db2/' + filename, 'wb+')
+            return open('/home/electrumx/db/' + filename, 'wb+')
         raise
 
 

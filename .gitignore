@@ -9,3 +9,5 @@ tests/*/__pycache__/
 /dist
 /electrumx.egg-info
 *.pyc
+db/
+leveldb-1.20/
