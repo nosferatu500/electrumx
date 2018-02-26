@@ -72,6 +72,8 @@ fi
 
 
 sudo apt-get install liblz4-dev -y
+sudo apt-get install libbz2-dev -y
+sudo apt-get install libsnappy-dev -y
 sudo python3.6 -m pip install python-rocksdb==0.6.9
 
 sudo python3.6 -m pip install aiohttp
