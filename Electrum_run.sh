@@ -9,7 +9,7 @@ export DAEMON_URL=http://$rpcuser:$rpcpassword@127.0.0.1:$rpcport/
 
 export COIN=CrypticCoin
 
-export HOST=127.0.0.1
+export HOST=0.0.0.0
 export DB_ENGINE=rocksdb
 export NET=mainnet
 
