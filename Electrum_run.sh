@@ -19,7 +19,7 @@ export SSL_PORT=50002
 export SSL_CERTFILE=$HOME/electrumx/db/server.crt
 export SSL_KEYFILE=$HOME/electrumx/db/server.key
 
-
+export ALLOW_ROOT=1
 
 cd $HOME/electrumx
 
