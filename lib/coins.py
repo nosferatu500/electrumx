@@ -1032,8 +1032,8 @@ class CrypticCoin(Coin):
     P2PKH_VERBYTE = bytes.fromhex('1e')
     P2SH_VERBYTES = [bytes.fromhex("33")]
     WIF_BYTE = bytes.fromhex("b7")
-    GENESIS_HASH = ('000003201729c2621caf1352ff837447'
-                    '2e2d2bf1762ae4dd3092189fe4cea9e0')
+    GENESIS_HASH = ('00000bd0cfdb783f7a430e9162b57539'
+                    '011d3c2adfb911b051d1be62d264a051')
     DESERIALIZER = lib_tx.DeserializerTxTime
     DAEMON = daemon.LegacyRPCDaemon
     TX_COUNT = 10
