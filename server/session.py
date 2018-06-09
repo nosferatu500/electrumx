@@ -366,6 +366,7 @@ class ElectrumX(SessionBase):
 
         raw_tx: the raw transaction as a hexadecimal string'''
         # This returns errors as JSON RPC errors, as is natural
+        self.log_info('sent tx: {}'.format(raw_tx))
         try:
             tx_hash = await self.daemon.sendrawtransaction([raw_tx])
             self.txs_sent += 1
